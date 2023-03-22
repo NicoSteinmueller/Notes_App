@@ -18,7 +18,7 @@ services:
   mongo-express:
     container_name: mongo-express
     image: mongo-express:1.0.0-alpha.4 #don't support Server Status (Known Bug)
-    restart: always
+    restart: unless-stopped
     depends_on:
       - db
     networks:
@@ -27,8 +27,8 @@ services:
       - ME_CONFIG_MONGODB_SERVER=mongo-dev
       - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
       - ME_CONFIG_MONGODB_ADMINPASSWORD=pass1
-      - #ME_CONFIG_BASICAUTH_USERNAME=admin
-      - #ME_CONFIG_BASICAUTH_PASSWORD=tribes
+       #ME_CONFIG_BASICAUTH_USERNAME=admin
+       #ME_CONFIG_BASICAUTH_PASSWORD=tribes
     ports:
       - '8081:8081'
     volumes:
