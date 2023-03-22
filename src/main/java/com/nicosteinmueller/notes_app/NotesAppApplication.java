@@ -11,6 +11,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
 @SpringBootApplication
 public class NotesAppApplication {
 
@@ -21,16 +24,47 @@ public class NotesAppApplication {
 	@Bean
 	CommandLineRunner runner(UserRepository userRepository, NoteRepository noteRepository){
 		return args -> {
-			User user = UserGeneration.generateUser();
-			userRepository.findUserByEmail(user.getEmail()).ifPresentOrElse(s -> {
-				System.out.println(s.getEmail() + " already exists");
-			}, () -> {
-				System.out.println(user.getEmail() + " inserted");
-				userRepository.insert(user);
+			//User user = UserGeneration.generateUser();
 
-				Note note = NoteGeneration.generateNote(user);
-				noteRepository.insert(note);
-			});
+			for (User user:UserGeneration.generateUsers()
+				 ) {
+				userRepository.findUserByEmail(user.getEmail()).ifPresentOrElse(s -> {
+					System.out.println(s.getEmail() + " already exists");
+				}, () -> {
+					System.out.println(user.getEmail() + " inserted");
+					userRepository.insert(user);
+
+					List<Note> note;
+
+					switch (user.getEmail()) {
+						case "amanda.tobes@avid.com":
+							note = NoteGeneration.generateNotesAmanda(user);
+							noteRepository.insert(note);
+							break;
+						case "tom.meier@avid.com":
+							note = NoteGeneration.generateNotesTom(user);
+							noteRepository.insert(note);
+							break;
+						case "a.klebrig@natgeo.de":
+							note = NoteGeneration.generateNotesAndreas(user);
+							noteRepository.insert(note);
+							break;
+						case "theelven@oracle.com":
+							note = NoteGeneration.generateNotesAddaine(user);
+							noteRepository.insert(note);
+							break;
+						case "itsstrange@marvel.com":
+							note = NoteGeneration.generateNotesStrange(user);
+							noteRepository.insert(note);
+							break;
+
+					}
+
+
+				});
+
+			}
+
 		};
 	}
 }
