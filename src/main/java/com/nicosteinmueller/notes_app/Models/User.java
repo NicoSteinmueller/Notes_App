@@ -15,17 +15,17 @@ public class User {
     private String id;
     private String firstName;
     private String lastName;
-    private byte[] passwordHash;
+    private String password;
     @Indexed(unique = true)
     private String email;
     private LocalDateTime created;
     private List<String> labels;
     private Settings settings;
 
-    public User(String firstName, String lastName, byte[] passwordHash, String email, LocalDateTime created, List<String> labels, Settings settings) {
+    public User(String firstName, String lastName, String password, String email, LocalDateTime created, List<String> labels, Settings settings) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.passwordHash = passwordHash;
+        this.password = password;
         this.email = email;
         this.created = created;
         this.labels = labels;
