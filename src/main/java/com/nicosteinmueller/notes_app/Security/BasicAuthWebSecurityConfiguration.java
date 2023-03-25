@@ -2,6 +2,7 @@ package com.nicosteinmueller.notes_app.Security;
 
 import com.nicosteinmueller.notes_app.Security.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -22,12 +23,13 @@ public class BasicAuthWebSecurityConfiguration {
   private AppBasicAuthenticationEntryPoint authenticationEntryPoint;
   @Autowired
   private CustomUserDetailsService customUserDetailsService;
-
+  @Value("${app.api.version}")
+  private String apiVersion;
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     // https://docs.spring.io/spring-security/reference/servlet/authentication/passwords/basic.html
     http.authorizeHttpRequests()
-      .requestMatchers("/public").permitAll()
+      .requestMatchers(apiVersion+"/auth/register").permitAll()
       .anyRequest().authenticated()
       .and()
       .httpBasic()
