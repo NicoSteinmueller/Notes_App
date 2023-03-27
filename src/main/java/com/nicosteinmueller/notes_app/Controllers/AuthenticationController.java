@@ -1,11 +1,13 @@
-package com.nicosteinmueller.notes_app.Security.auth;
+package com.nicosteinmueller.notes_app.Controllers;
 
 import com.nicosteinmueller.notes_app.Models.api.AuthenticationRequest;
 import com.nicosteinmueller.notes_app.Models.api.AuthenticationResponse;
 import com.nicosteinmueller.notes_app.Models.api.RegisterRequest;
+import com.nicosteinmueller.notes_app.Security.auth.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +23,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.register(request));
     }
 
-    @PostMapping("/authenticate")
+    @GetMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate (@RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }

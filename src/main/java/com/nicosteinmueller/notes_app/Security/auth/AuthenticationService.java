@@ -44,7 +44,7 @@ public class AuthenticationService {
         );
         var user = userRepository.findUserByEmail(request.getEmail()).orElseThrow();
         var jwt = jwtService.generateToken(user);
-        revokeAllTokens(user);
+        // revokeAllTokens(user); TODO check if needed
         saveUserToken(user, jwt);
 
         return AuthenticationResponse.builder().token(jwt).build();
