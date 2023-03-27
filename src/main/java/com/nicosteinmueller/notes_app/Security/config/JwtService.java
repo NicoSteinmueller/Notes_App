@@ -18,6 +18,11 @@ import java.util.function.Function;
 public class JwtService {
     private static final String SECRET_KEY = "404E635266556A586E3272357538782F413F4sfbngerhkgeshjfklinbdfhsjkvnbfdjshkvnbfdskhjvnbfdshjkvnbfdslkhv43dsfsd428472B4B6250645367566B5970"; //TODO change me
 
+    public String extractUsername (Map<String, String> headers) {
+        String token = headers.get("authorization").substring(7);
+        return extractUsername(token);
+    }
+
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
@@ -37,7 +42,7 @@ public class JwtService {
             .setClaims(extraClaims)
             .setSubject(userDetails.getUsername())
             .setIssuedAt(new Date(System.currentTimeMillis()))
-            .setExpiration(new Date(System.currentTimeMillis()+ 1000 * 60 * 24))//TODO check Time
+            .setExpiration(new Date(System.currentTimeMillis()+ 1000 * 60 * 60))//TODO check Time
             .signWith(getSignInKey(), SignatureAlgorithm.HS512)
             .compact();
     }
