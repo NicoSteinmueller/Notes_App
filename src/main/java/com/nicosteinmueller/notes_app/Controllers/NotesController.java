@@ -7,10 +7,17 @@ import com.nicosteinmueller.notes_app.Models.api.NoteShortApi;
 import com.nicosteinmueller.notes_app.Repositorys.NoteRepository;
 import com.nicosteinmueller.notes_app.Repositorys.UserRepository;
 import com.nicosteinmueller.notes_app.Security.config.JwtService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -18,7 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Controller
+@Tag(name = "Notes", description = "Notes management APIs")
+@SecurityRequirement(name = "Bearer Token")
+@RestController
 @RequestMapping("${app.api.version}"+"/notes")
 @RequiredArgsConstructor
 public class NotesController {
@@ -26,6 +35,20 @@ public class NotesController {
     private final UserRepository userRepository;
     private final NoteRepository noteRepository;
 
+    @Operation(summary = "Get a Note.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "Return Note.", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = NoteApi.class), examples =@ExampleObject(value = """
+                    {
+                        "id": "6421ce0fe602881f58cc6184",
+                        "title": "Test",
+                        "text": "Ich teste Notes.",
+                        "created": "2023-03-27T19:10:39.577",
+                        "modified": "2023-03-27T19:10:39.577",
+                        "favorite": false
+                    }""") )}),
+            @ApiResponse(responseCode = "401", description = "The Token is invalid.", content = {@Content(mediaType = "application/string", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "JWT invalid. \n  OR\nJWT expired."))}),
+            @ApiResponse(responseCode = "404", description = "Note not found.", content = @Content)
+    })
     @GetMapping("/getNote")
     public ResponseEntity<NoteApi> getNote (@RequestHeader Map<String, String> headers, @RequestParam String noteId){
         String userEmail = jwtService.extractUsername(headers);
@@ -40,6 +63,19 @@ public class NotesController {
         return ResponseEntity.ok(noteCompleteApi);
     }
 
+    @Operation(summary = "Save Note.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Note saved.", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = NoteApi.class), examples =@ExampleObject(value = """
+                    {
+                        "id": "6421ce0fe602881f58cc6184",
+                        "title": "Test",
+                        "text": "Ich teste Notes.",
+                        "created": "2023-03-27T19:10:39.577",
+                        "modified": "2023-03-27T19:10:39.577",
+                        "favorite": false
+                    }""") )}),
+            @ApiResponse(responseCode = "401", description = "The Token is invalid.", content = {@Content(mediaType = "application/string", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "JWT invalid. \n  OR\nJWT expired."))})
+    })
     @PostMapping("/saveNote")
     public ResponseEntity<NoteApi> saveNote(@RequestHeader Map<String, String> headers, @RequestBody NoteApi noteSave){
         String userEmail = jwtService.extractUsername(headers);
@@ -62,6 +98,25 @@ public class NotesController {
         return ResponseEntity.ok(new NoteApi(note));
     }
 
+    @Operation(summary = "Get all Notes short.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "Return all Notes short.", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = NoteShortApi.class), examples =@ExampleObject(value = """
+                    [
+                        {
+                            "id": "6421ce0fe602881f58cc6184",
+                            "title": "Test",
+                            "modified": "2023-03-27T19:10:39.577",
+                            "favorite": false
+                        },
+                        {
+                            "id": "64230c3e25a2555fcfb11eb0",
+                            "title": "Test",
+                            "modified": "2023-03-28T17:48:01.374",
+                            "favorite": false
+                        }
+                    ]""") )}),
+            @ApiResponse(responseCode = "401", description = "The Token is invalid.", content = {@Content(mediaType = "application/string", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "JWT invalid. \n  OR\nJWT expired."))})
+    })
     @GetMapping("/getAllNotesShort")
     public ResponseEntity<List<NoteShortApi>> getAllNotesShort(@RequestHeader Map<String, String> headers){
         String userEmail = jwtService.extractUsername(headers);

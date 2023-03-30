@@ -27,12 +27,12 @@ public class SecurityConfiguration {
         httpSecurity
                 .csrf().disable()//TODO check if it can be enabled
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v0"+"/auth/**").permitAll()//TODO put version to variable
+                .requestMatchers("/api/v0/auth/**", "/api/v0/docs/**").permitAll()//TODO put version to variable
                 .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .logout().logoutUrl("/api/v0"+"/auth/logout").addLogoutHandler(logoutHandler)
+                .logout().logoutUrl("/api/v0/auth/logout").addLogoutHandler(logoutHandler)
                 .logoutSuccessHandler(((request, response, authentication) -> SecurityContextHolder.clearContext()));
 
         return httpSecurity.build();
