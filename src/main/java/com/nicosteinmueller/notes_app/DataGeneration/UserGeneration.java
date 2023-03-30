@@ -9,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Component
 public class UserGeneration {
@@ -23,7 +22,6 @@ public class UserGeneration {
                 passwordEncoder.encode("test"),
                 "max@mustermann.de",
                 LocalDateTime.now(),
-                List.of("Test", "Work"),
                 settings);
     }
 }

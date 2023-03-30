@@ -14,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +31,6 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .created(LocalDateTime.now())
-                .labels(List.of("Private", "Work"))
                 .settings(new Settings(false, Language.ENGLISH))
                 .role(Role.USER)
                 .build();

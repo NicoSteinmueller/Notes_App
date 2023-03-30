@@ -29,17 +29,15 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private LocalDateTime created;
-    private List<String> labels;
     private Settings settings;
     private Role role;
 
-    public User(String firstName, String lastName, String password, String email, LocalDateTime created, List<String> labels, Settings settings) {
+    public User(String firstName, String lastName, String password, String email, LocalDateTime created, Settings settings) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.email = email;
         this.created = created;
-        this.labels = labels;
         this.settings = settings;
     }
 

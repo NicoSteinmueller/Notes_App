@@ -36,7 +36,6 @@ public class UserController {
             user.setLastName(userApi.getLastName());
             user.setEmail(userApi.getEmail());
             user.setSettings(userApi.getSettings());
-            user.setLabels(userApi.getLabels());
 
             userRepository.save(user);
         }catch (Exception ignored) {
@@ -58,8 +57,7 @@ public class UserController {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getEmail(),
-                user.getSettings(),
-                user.getLabels());
+                user.getSettings());
 
         return new ResponseEntity<>(userApi, HttpStatus.OK);
     }

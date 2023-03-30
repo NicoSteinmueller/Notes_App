@@ -49,13 +49,12 @@ public class NotesController {
         var optionalNote = noteRepository.findNoteByIdAndUser(noteSave.getId(), user);
         if (noteSave.getId().isBlank()|| optionalNote.isEmpty()){
             note = new Note(user, noteSave.getTitle(), noteSave.getText(),
-                    noteSave.getLabels(), LocalDateTime.now(), LocalDateTime.now(), noteSave.isFavorite());
+                     LocalDateTime.now(), LocalDateTime.now(), noteSave.isFavorite());
             noteRepository.insert(note);
         }else {
             note = optionalNote.get();
             note.setTitle(noteSave.getTitle());
             note.setText(noteSave.getText());
-            note.setLabels(noteSave.getLabels());
             note.setFavorite(noteSave.isFavorite());
             noteRepository.save(note);
         }
