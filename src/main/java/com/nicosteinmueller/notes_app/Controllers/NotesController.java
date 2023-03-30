@@ -46,7 +46,8 @@ public class NotesController {
                         "modified": "2023-03-27T19:10:39.577",
                         "favorite": false
                     }""") )}),
-            @ApiResponse(responseCode = "401", description = "The Token is invalid.", content = {@Content(mediaType = "application/string", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "JWT invalid. \n  OR\nJWT expired."))}),
+            @ApiResponse(responseCode = "401", description = "The Token is invalid.", content = {@Content(mediaType = "application/string", schema = @Schema(implementation = String.class), examples =
+            @ExampleObject(value = "JWT invalid. \n  OR\nJWT expired."))}),
             @ApiResponse(responseCode = "404", description = "Note not found.", content = @Content)
     })
     @GetMapping("/getNote")
@@ -74,7 +75,8 @@ public class NotesController {
                         "modified": "2023-03-27T19:10:39.577",
                         "favorite": false
                     }""") )}),
-            @ApiResponse(responseCode = "401", description = "The Token is invalid.", content = {@Content(mediaType = "application/string", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "JWT invalid. \n  OR\nJWT expired."))})
+            @ApiResponse(responseCode = "401", description = "The Token is invalid.", content = {@Content(mediaType = "application/string", schema = @Schema(implementation = String.class), examples =
+            @ExampleObject(value = "JWT invalid. \n  OR\nJWT expired."))})
     })
     @PostMapping("/saveNote")
     public ResponseEntity<NoteApi> saveNote(@RequestHeader Map<String, String> headers, @RequestBody NoteApi noteSave){
@@ -98,6 +100,37 @@ public class NotesController {
         return ResponseEntity.ok(new NoteApi(note));
     }
 
+    @Operation(summary = "Set Note Favorite.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Note Favorite saved.", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = NoteShortApi.class), examples =@ExampleObject(value = """
+                    {
+                        "id": "6421ce0fe602881f58cc6184",
+                        "title": "Test",
+                        "modified": "2023-03-27T19:10:39.577",
+                        "favorite": true
+                    }""") )}),
+            @ApiResponse(responseCode = "401", description = "The Token is invalid.", content = {@Content(mediaType = "application/string", schema = @Schema(implementation = String.class), examples =
+            @ExampleObject(value = "JWT invalid. \n  OR\nJWT expired."))}),
+            @ApiResponse(responseCode = "404", description = "Note not found.", content = @Content)
+    })
+    @PostMapping("/setNoteFavorite")
+    public ResponseEntity<NoteShortApi> setNoteFavorite(@RequestHeader Map<String, String> headers, @RequestBody NoteShortApi noteShort){
+        String userEmail = jwtService.extractUsername(headers);
+        User user = userRepository.getUserByEmail(userEmail);
+
+        Note note;
+        var optionalNote = noteRepository.findNoteByIdAndUser(noteShort.getId(), user);
+        if (optionalNote.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }else {
+            note = optionalNote.get();
+            note.setFavorite(noteShort.isFavorite());
+            noteRepository.save(note);
+        }
+
+        return ResponseEntity.ok(new NoteShortApi(note));
+    }
+
     @Operation(summary = "Get all Notes short.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "202", description = "Return all Notes short.", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = NoteShortApi.class), examples =@ExampleObject(value = """
@@ -115,7 +148,8 @@ public class NotesController {
                             "favorite": false
                         }
                     ]""") )}),
-            @ApiResponse(responseCode = "401", description = "The Token is invalid.", content = {@Content(mediaType = "application/string", schema = @Schema(implementation = String.class), examples = @ExampleObject(value = "JWT invalid. \n  OR\nJWT expired."))})
+            @ApiResponse(responseCode = "401", description = "The Token is invalid.", content = {@Content(mediaType = "application/string", schema = @Schema(implementation = String.class), examples =
+            @ExampleObject(value = "JWT invalid. \n  OR\nJWT expired."))})
     })
     @GetMapping("/getAllNotesShort")
     public ResponseEntity<List<NoteShortApi>> getAllNotesShort(@RequestHeader Map<String, String> headers){
