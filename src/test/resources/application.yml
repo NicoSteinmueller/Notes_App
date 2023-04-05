@@ -1,0 +1,24 @@
+spring:
+  data:
+    mongodb:
+      authentication-database: admin
+      username: admin
+      password: pass1
+      database: UnitTest
+      port: 27017
+      host: localhost
+      auto-index-creation: true
+
+springdoc:
+  swagger-ui:
+    path: "/api/v0/docs/swagger-ui"
+    tryItOutEnabled: true
+    filter: true
+  api-docs:
+    path: "/api/v0/docs/api-docs"
+
+app:
+  api:
+    version: "/api/v0"
+  openapi:
+    dev-url: "http://localhost:8080"
