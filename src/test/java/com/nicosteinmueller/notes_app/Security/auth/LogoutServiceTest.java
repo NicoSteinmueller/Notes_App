@@ -41,7 +41,7 @@ public class LogoutServiceTest {
         logoutService = new LogoutService(tokenRepository);
 
         Settings settings = new Settings(true, Language.ENGLISH);
-        User user = new User("123", "first", "last", "passHash", "first@last.com",
+        User user = new User("123", "first", "last", "first@last.com", "passHash",
                 LocalDateTime.of(2023, 3, 20, 12, 0), settings, Role.USER);
         Token token = new Token("abc", "token", TokenType.BEARER, false, false, user);
         userRepository.save(user);
