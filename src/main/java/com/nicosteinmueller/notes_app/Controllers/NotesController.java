@@ -163,4 +163,26 @@ public class NotesController {
         return ResponseEntity.ok(notesShort);
     }
 
+
+    @Operation(summary = "Delete a Note.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Note successful deleted.", content = @Content),
+            @ApiResponse(responseCode = "406", description = "Note don't exists or User don't have access.", content = @Content),
+            @ApiResponse(responseCode = "401", description = "The Token is invalid.", content = {@Content(mediaType = "application/string", schema = @Schema(implementation = String.class), examples =
+            @ExampleObject(value = "JWT invalid. \n  OR\nJWT expired."))})
+    })
+    @DeleteMapping("/deleteNote")
+    public ResponseEntity<Object> deleteNote(@RequestHeader Map<String, String> headers, @RequestParam String noteId){
+        String userEmail = jwtService.extractUsername(headers);
+        User user = userRepository.getUserByEmail(userEmail);
+
+        var note = noteRepository.findNoteByIdAndUser(noteId, user);
+        if (note.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+
+        noteRepository.deleteNoteById(noteId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

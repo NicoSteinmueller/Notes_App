@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface NoteRepository extends MongoRepository<Note, String> {
     Optional<Note> findNoteByIdAndUser (String id, User user);
     List<Note> getAllByUser (User user);
+    void deleteNoteById (String id);
 }
