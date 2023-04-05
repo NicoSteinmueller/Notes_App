@@ -22,3 +22,6 @@ app:
     version: "/api/v0"
   openapi:
     dev-url: "http://localhost:8080"
+  security:
+    jwt:
+      secret: ${SECRET}

@@ -22,3 +22,6 @@ app:
     version: "/api/v0"
   openapi:
     dev-url: "http://localhost:8080"
+  security:
+    jwt:
+      secret: "dsgvbfdskjshfhj32745683245z4zJKHDSTUZFGHJASGFi3247895z7684325zuhjOIHZEWUDFTWDGESZUJFHGWEUDIF48237zt568473HUHGEFWUZFGWEhzuhewuzdgzuef"
