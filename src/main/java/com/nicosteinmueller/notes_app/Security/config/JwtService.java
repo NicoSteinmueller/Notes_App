@@ -41,7 +41,7 @@ public class JwtService {
         return generateToken(new HashMap<>(), userDetails);
     }
 
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+    private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
     return Jwts
             .builder()
             .setClaims(extraClaims)
@@ -60,7 +60,7 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimsTFunction) {
+    private  <T> T extractClaim(String token, Function<Claims, T> claimsTFunction) {
         final Claims claims = extractAllClaims(token);
         return claimsTFunction.apply(claims);
     }
