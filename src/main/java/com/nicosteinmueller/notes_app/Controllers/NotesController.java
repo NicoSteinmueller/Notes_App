@@ -37,7 +37,7 @@ public class NotesController {
 
     @Operation(summary = "Get a Note.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "202", description = "Return Note.", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = NoteApi.class), examples =@ExampleObject(value = """
+            @ApiResponse(responseCode = "200", description = "Return Note.", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = NoteApi.class), examples =@ExampleObject(value = """
                     {
                         "id": "6421ce0fe602881f58cc6184",
                         "title": "Test",
