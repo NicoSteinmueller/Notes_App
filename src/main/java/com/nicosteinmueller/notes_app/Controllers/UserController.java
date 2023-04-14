@@ -40,7 +40,7 @@ public class UserController {
             @ApiResponse(responseCode = "409", description = "User update not possible.", content = @Content)
     })
     @PutMapping("/update")
-    private ResponseEntity<String> update(@RequestHeader Map<String, String> headers, @RequestBody UserApi userApi){
+    public ResponseEntity<String> update(@RequestHeader Map<String, String> headers, @RequestBody UserApi userApi){
         String usermail = jwtService.extractUsername(headers);
         var OptionalUser = userRepository.findUserByEmail(usermail);
         if (OptionalUser.isEmpty())
@@ -77,7 +77,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "User not found.", content = @Content)
     })
     @GetMapping("/get")
-    private ResponseEntity<UserApi> get(@RequestHeader Map<String, String> headers) {
+    public ResponseEntity<UserApi> get(@RequestHeader Map<String, String> headers) {
         String usermail = jwtService.extractUsername(headers);
         var OptionalUser = userRepository.findUserByEmail(usermail);
         if (OptionalUser.isEmpty())
@@ -101,7 +101,7 @@ public class UserController {
             @ApiResponse(responseCode = "409", description = "Old Password don't match.", content = @Content)
     })
     @PutMapping("/changePassword")
-    private ResponseEntity<Object> changePassword(@RequestHeader Map<String, String> headers, @RequestBody PasswordChange passwordChange) {
+    public ResponseEntity<Object> changePassword(@RequestHeader Map<String, String> headers, @RequestBody PasswordChange passwordChange) {
         String usermail = jwtService.extractUsername(headers);
         var OptionalUser = userRepository.findUserByEmail(usermail);
         if (OptionalUser.isEmpty())
@@ -116,8 +116,6 @@ public class UserController {
         userRepository.save(user);
 
         return  ResponseEntity.status(HttpStatus.OK).build();
-
-
     }
 
 }
