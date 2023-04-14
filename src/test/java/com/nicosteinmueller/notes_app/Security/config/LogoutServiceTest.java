@@ -1,9 +1,8 @@
-package com.nicosteinmueller.notes_app.Security.auth;
+package com.nicosteinmueller.notes_app.Security.config;
 
 import com.nicosteinmueller.notes_app.Models.*;
 import com.nicosteinmueller.notes_app.Repositorys.TokenRepository;
 import com.nicosteinmueller.notes_app.Repositorys.UserRepository;
-import com.nicosteinmueller.notes_app.Security.config.LogoutService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +15,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
